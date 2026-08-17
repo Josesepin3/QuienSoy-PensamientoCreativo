@@ -2,17 +2,84 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>¿Quién Soy? - Esperando</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    .waiting {
+      width: 100%;
+      height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .waiting-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .waiting-subtitle {
+      font-size: 14px;
+      color: var(--subtext);
+      margin-bottom: 48px;
+    }
+
+    .player-name {
+      font-size: 18px;
+      color: var(--accent-alt);
+      margin-bottom: 48px;
+    }
+
+    .waiting-dots {
+      font-size: 14px;
+      color: var(--subtext);
+    }
+
+    .dots::after {
+      content: '';
+      animation: dots 1.5s infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--surface);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 24px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-  <div class="container" style="text-align: center;">
-    <div class="title">¿Quién Soy?</div>
-    <div class="subtitle" id="status">Esperando a que el host inicie el juego...</div>
-    <div style="margin-top: 48px; color: var(--subtext);" id="playerCount">0 jugadores conectados</div>
+  <div class="waiting">
+    <div class="spinner"></div>
+    <div class="waiting-title">¿Quién Soy?</div>
+    <div class="waiting-subtitle">Esperando a que el host inicie el juego</div>
+    <div class="player-name" id="playerName"></div>
+    <div class="waiting-dots">Conectado<span class="dots"></span></div>
   </div>
   <script type="module" src="js/waiting.js"></script>
 </body>

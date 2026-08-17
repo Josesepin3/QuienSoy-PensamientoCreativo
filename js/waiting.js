@@ -1,8 +1,7 @@
 import { db, ref, onValue } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const status = document.getElementById('status');
-  const playerCount = document.getElementById('playerCount');
+  const playerNameEl = document.getElementById('playerName');
   const playerName = localStorage.getItem('playerName');
 
   if (!playerName) {
@@ -10,18 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  status.textContent = `Hola ${playerName}`;
+  playerNameEl.textContent = playerName;
 
-  const gameRef = ref(db, 'game');
+  const gameRef = ref(db, 'game/status');
   onValue(gameRef, (snapshot) => {
-    const game = snapshot.val();
-    if (game) {
-      const players = game.players ? Object.keys(game.players).length : 0;
-      playerCount.textContent = `${players} jugadores conectados`;
-
-      if (game.status === 'playing') {
-        window.location.href = 'quiz.html';
-      }
+    const status = snapshot.val();
+    if (status === 'playing') {
+      window.location.href = 'quiz.html';
     }
   });
 });
