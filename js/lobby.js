@@ -1,14 +1,11 @@
 import { db, ref, set, onValue, update, remove } from './firebase-config.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const qrcode = document.getElementById('qrcode');
   const qrLink = document.getElementById('qrLink');
   const playerCount = document.getElementById('playerCount');
   const playersLine = document.getElementById('playersLine');
   const startBtn = document.getElementById('startBtn');
-
-  // Clear previous game data
-  remove(ref(db, 'game'));
 
   const joinUrl = window.location.origin + window.location.pathname.replace(/lobby\.html$/, 'join.html');
 
@@ -21,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   qrLink.textContent = joinUrl;
+
+  // Clear previous game data first, then listen
+  await remove(ref(db, 'game'));
 
   const playersRef = ref(db, 'game/players');
   onValue(playersRef, (snapshot) => {
