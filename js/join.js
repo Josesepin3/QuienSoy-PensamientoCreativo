@@ -1,4 +1,4 @@
-import { db, ref, set, onDisconnect } from './firebase-config.js';
+import { db, ref, set } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const nameInput = document.getElementById('nameInput');
@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const playerRef = ref(db, `game/players/${name}`);
         await set(playerRef, true);
-
-        onDisconnect(playerRef).remove();
 
         localStorage.setItem('playerName', name);
         window.location.href = 'waiting.html';

@@ -1,4 +1,4 @@
-import { db, ref, set, get, update, onValue } from './firebase-config.js';
+import { db, ref, set, get, update, onValue, remove } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const currentQuestion = document.getElementById('currentQuestion');
@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       try {
         await set(ref(db, 'game/status'), 'finished');
+        await remove(ref(db, 'game/players'));
         window.location.href = 'index.html';
       } catch (error) {
         console.error('Error finishing game:', error);
