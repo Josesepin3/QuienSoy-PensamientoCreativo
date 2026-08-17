@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  let currentQ = -1;
+  let currentQ = 0;
   let answered = false;
 
   // Start with waiting screen
@@ -71,6 +71,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
   }
 
+  // Listen for timer changes from Firebase
+  const timerRef = ref(db, 'game/timer');
+  onValue(timerRef, (snapshot) => {
+    const firebaseTimer = snapshot.val();
+    if (firebaseTimer !== null) {
+      timer.textContent = firebaseTimer;
+      if (firebaseTimer <= 5) {
+        timer.classList.add('warning');
+      } else {
+        timer.classList.remove('warning');
+      }
+    }
+  });
+
   // Listen for question changes
   const gameRef = ref(db, 'game/currentQuestion');
   onValue(gameRef, (snapshot) => {
@@ -82,6 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         window.location.href = 'index.html';
       }
+    }
+  });
+
+  // Listen for game finished
+  const statusRef = ref(db, 'game/status');
+  onValue(statusRef, (snapshot) => {
+    const status = snapshot.val();
+    if (status === 'finished') {
+      window.location.href = 'index.html';
     }
   });
 });

@@ -9,12 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const responseCount = document.getElementById('responseCount');
   const resultsGrid = document.getElementById('resultsGrid');
   const playersLine = document.getElementById('playersLine');
-  const startBtn = document.getElementById('startBtn');
   const nextBtn = document.getElementById('nextBtn');
-  const waitingState = document.getElementById('waitingState');
-  const playingState = document.getElementById('playingState');
-  const playerCountBig = document.getElementById('playerCountBig');
-  const playersWaitingLine = document.getElementById('playersWaitingLine');
 
   totalQuestions.textContent = TOTAL_QUESTIONS;
 
@@ -28,13 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const players = snapshot.val();
     if (players) {
       const names = Object.keys(players);
-      playerCountBig.textContent = names.length;
       playersLine.textContent = names.join(' - ');
-      playersWaitingLine.textContent = names.join(' - ');
     } else {
-      playerCountBig.textContent = '0';
       playersLine.innerHTML = '<span>No hay jugadores</span>';
-      playersWaitingLine.innerHTML = '<span>Agrega jugadores escaneando el QR</span>';
     }
   });
 
@@ -107,6 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
       timeLeft--;
       timer.textContent = timeLeft;
 
+      // Sync timer to Firebase
+      try {
+        await set(ref(db, 'game/timer'), timeLeft);
+      } catch (error) {
+        console.error('Error syncing timer:', error);
+      }
+
       if (timeLeft <= 5) {
         timer.classList.add('warning');
       }
@@ -122,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function goToNextQuestion() {
     clearInterval(timerInterval);
     timer.classList.remove('warning');
+    nextBtn.style.display = 'none';
     currentQ++;
 
     if (currentQ < TOTAL_QUESTIONS) {
@@ -137,36 +136,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       try {
         await set(ref(db, 'game/status'), 'finished');
+        window.location.href = 'index.html';
       } catch (error) {
         console.error('Error finishing game:', error);
       }
     }
   }
 
-  // Start button
-  startBtn.addEventListener('click', async () => {
-    startBtn.style.display = 'none';
-    waitingState.classList.add('hidden');
-    playingState.classList.add('active');
-    timer.textContent = QUIZ_CONFIG.timePerQuestion;
-
-    try {
-      await update(ref(db, 'game'), {
-        status: 'playing',
-        currentQuestion: 0,
-        timer: QUIZ_CONFIG.timePerQuestion
-      });
-    } catch (error) {
-      console.error('Error starting game:', error);
-    }
-
-    loadQuestion();
-    startTimer();
-  });
-
   // Next button
-  nextBtn.addEventListener('click', () => {
-    nextBtn.style.display = 'none';
-    goToNextQuestion();
-  });
+  nextBtn.addEventListener('click', goToNextQuestion);
+
+  // Start game immediately
+  loadQuestion();
+  startTimer();
 });
