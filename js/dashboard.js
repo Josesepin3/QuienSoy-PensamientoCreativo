@@ -1,6 +1,6 @@
 import { db, ref, set, get, update, onValue, remove } from './firebase-config.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const currentQuestion = document.getElementById('currentQuestion');
   const totalQuestions = document.getElementById('totalQuestions');
   const timer = document.getElementById('timer');
@@ -148,6 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
   nextBtn.addEventListener('click', goToNextQuestion);
 
   // Start game immediately
+  try {
+    await set(ref(db, 'game/currentQuestion'), 0);
+  } catch (error) {
+    console.error('Error setting initial question:', error);
+  }
   loadQuestion();
   startTimer();
 });
