@@ -16,8 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  let currentQ = 0;
+  let currentQ = -1;
   let answered = false;
+
+  // Start with waiting screen
+  questionScreen.style.display = 'none';
+  waitingScreen.classList.add('active');
 
   function loadQuestion() {
     const q = QUIZ_CONFIG.questions[currentQ];
@@ -67,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
   }
 
+  // Listen for question changes
   const gameRef = ref(db, 'game/currentQuestion');
   onValue(gameRef, (snapshot) => {
     const newQuestion = snapshot.val();
@@ -79,6 +84,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-
-  loadQuestion();
 });

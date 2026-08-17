@@ -161,11 +161,86 @@
       position: fixed;
       bottom: 48px;
       right: 48px;
+      display: flex;
+      gap: 16px;
     }
 
     .btn {
       padding: 20px 48px;
       font-size: 18px;
+    }
+
+    .btn-secondary {
+      background-color: var(--surface);
+      border: 2px solid #444;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+    }
+
+    /* Waiting state */
+    .waiting-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .waiting-title {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .waiting-subtitle {
+      font-size: 18px;
+      color: var(--subtext);
+      margin-bottom: 48px;
+    }
+
+    .player-count-big {
+      font-size: 96px;
+      font-weight: 700;
+      color: var(--accent-alt);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .player-count-label {
+      font-size: 16px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .players-waiting-line {
+      margin-top: 48px;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .players-waiting-line span {
+      color: var(--subtext);
+    }
+
+    /* Playing state */
+    .playing-state {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .playing-state.active {
+      display: flex;
+    }
+
+    .waiting-state.hidden {
+      display: none;
     }
   </style>
 </head>
@@ -175,28 +250,36 @@
       <div class="header-left">
         <div class="dashboard-title">¿Quién Soy?</div>
         <div class="progress-bar">
-          <div class="progress-fill" id="progressFill" style="width: 30%;"></div>
+          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
         </div>
       </div>
       <div class="header-right">
         <div class="question-counter">
-          <strong id="currentQuestion">1</strong>
+          <strong id="currentQuestion">0</strong>
           <span>/ <span id="totalQuestions">10</span></span>
         </div>
         <div>
-          <div class="timer-display" id="timer">20</div>
+          <div class="timer-display" id="timer">--</div>
           <div class="timer-label">segundos</div>
         </div>
       </div>
     </div>
 
-    <div class="question-section">
-      <div class="question-text" id="questionText"></div>
+    <!-- Waiting state (before game starts) -->
+    <div class="waiting-state" id="waitingState">
+      <div class="waiting-title">¿Quién Soy?</div>
+      <div class="waiting-subtitle">Esperando jugadores...</div>
+      <div class="player-count-big" id="playerCountBig">0</div>
+      <div class="player-count-label">jugadores conectados</div>
+      <div class="players-waiting-line" id="playersWaitingLine"><span>Agrega jugadores escaneando el QR</span></div>
+    </div>
 
-      <div class="response-count" id="responseCount"></div>
-
-      <div class="results-grid" id="resultsGrid">
-        <!-- Results will be populated by JavaScript -->
+    <!-- Playing state (during game) -->
+    <div class="playing-state" id="playingState">
+      <div class="question-section">
+        <div class="question-text" id="questionText"></div>
+        <div class="response-count" id="responseCount"></div>
+        <div class="results-grid" id="resultsGrid"></div>
       </div>
     </div>
 
@@ -206,7 +289,8 @@
   </div>
 
   <div class="host-controls">
-    <button class="btn" id="startBtn">Siguiente</button>
+    <button class="btn" id="startBtn">Iniciar Juego</button>
+    <button class="btn btn-secondary" id="nextBtn" style="display: none;">Siguiente</button>
   </div>
 
   <script src="js/questions.js"></script>

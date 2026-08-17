@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultsGrid = document.getElementById('resultsGrid');
   const playersLine = document.getElementById('playersLine');
   const startBtn = document.getElementById('startBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const waitingState = document.getElementById('waitingState');
+  const playingState = document.getElementById('playingState');
+  const playerCountBig = document.getElementById('playerCountBig');
+  const playersWaitingLine = document.getElementById('playersWaitingLine');
 
   totalQuestions.textContent = TOTAL_QUESTIONS;
 
@@ -17,14 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let timeLeft = QUIZ_CONFIG.timePerQuestion;
   let timerInterval = null;
 
+  // Listen for players
   const playersRef = ref(db, 'game/players');
   onValue(playersRef, (snapshot) => {
     const players = snapshot.val();
     if (players) {
       const names = Object.keys(players);
+      playerCountBig.textContent = names.length;
       playersLine.textContent = names.join(' - ');
+      playersWaitingLine.textContent = names.join(' - ');
     } else {
+      playerCountBig.textContent = '0';
       playersLine.innerHTML = '<span>No hay jugadores</span>';
+      playersWaitingLine.innerHTML = '<span>Agrega jugadores escaneando el QR</span>';
     }
   });
 
@@ -91,8 +101,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function startTimer() {
+    timer.textContent = timeLeft;
+    timerInterval = setInterval(async () => {
+      timeLeft--;
+      timer.textContent = timeLeft;
+
+      if (timeLeft <= 5) {
+        timer.classList.add('warning');
+      }
+
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        timer.classList.remove('warning');
+        nextBtn.style.display = 'block';
+      }
+    }, 1000);
+  }
+
+  async function goToNextQuestion() {
+    clearInterval(timerInterval);
+    timer.classList.remove('warning');
+    currentQ++;
+
+    if (currentQ < TOTAL_QUESTIONS) {
+      try {
+        await update(ref(db, 'game'), {
+          currentQuestion: currentQ
+        });
+      } catch (error) {
+        console.error('Error updating question:', error);
+      }
+      loadQuestion();
+      startTimer();
+    } else {
+      try {
+        await set(ref(db, 'game/status'), 'finished');
+      } catch (error) {
+        console.error('Error finishing game:', error);
+      }
+    }
+  }
+
+  // Start button
   startBtn.addEventListener('click', async () => {
     startBtn.style.display = 'none';
+    waitingState.classList.add('hidden');
+    playingState.classList.add('active');
+    timer.textContent = QUIZ_CONFIG.timePerQuestion;
 
     try {
       await update(ref(db, 'game'), {
@@ -105,37 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadQuestion();
+    startTimer();
+  });
 
-    timerInterval = setInterval(async () => {
-      timeLeft--;
-      timer.textContent = timeLeft;
-
-      if (timeLeft <= 5) {
-        timer.classList.add('warning');
-      }
-
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        currentQ++;
-
-        if (currentQ < TOTAL_QUESTIONS) {
-          try {
-            await update(ref(db, 'game'), {
-              currentQuestion: currentQ,
-              timer: QUIZ_CONFIG.timePerQuestion
-            });
-          } catch (error) {
-            console.error('Error updating question:', error);
-          }
-          loadQuestion();
-        } else {
-          try {
-            await set(ref(db, 'game/status'), 'finished');
-          } catch (error) {
-            console.error('Error finishing game:', error);
-          }
-        }
-      }
-    }, 1000);
+  // Next button
+  nextBtn.addEventListener('click', () => {
+    nextBtn.style.display = 'none';
+    goToNextQuestion();
   });
 });
