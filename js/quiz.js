@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  let currentQ = 0;
+  let currentQ = -1;
   let answered = false;
 
   // Start with waiting screen
