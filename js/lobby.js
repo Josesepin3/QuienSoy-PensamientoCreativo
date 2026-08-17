@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const playersLine = document.getElementById('playersLine');
   const startBtn = document.getElementById('startBtn');
 
-  const joinUrl = window.location.href.replace('lobby.html', 'join.html');
+  const joinUrl = window.location.origin + window.location.pathname.replace(/lobby\.html$/, 'join.html');
 
   new QRCode(qrcode, {
     text: joinUrl,
