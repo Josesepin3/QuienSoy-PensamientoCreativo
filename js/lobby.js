@@ -1,4 +1,4 @@
-import { db, ref, set, onValue, update } from './firebase-config.js';
+import { db, ref, set, onValue, update, remove } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const qrcode = document.getElementById('qrcode');
@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const playerCount = document.getElementById('playerCount');
   const playersLine = document.getElementById('playersLine');
   const startBtn = document.getElementById('startBtn');
+
+  // Clear previous game data
+  remove(ref(db, 'game'));
 
   const joinUrl = window.location.origin + window.location.pathname.replace(/lobby\.html$/, 'join.html');
 
