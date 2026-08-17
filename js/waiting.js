@@ -1,4 +1,4 @@
-import { db, ref, onValue } from './firebase-config.js';
+import { db, ref, onValue, onDisconnect } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const playerNameEl = document.getElementById('playerName');
@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   playerNameEl.textContent = playerName;
+
+  const playerRef = ref(db, `game/players/${playerName}`);
+  onDisconnect(playerRef).remove();
 
   const gameRef = ref(db, 'game/status');
   onValue(gameRef, (snapshot) => {
