@@ -7,8 +7,8 @@ const QUIZ_CONFIG = {
       options: ["Azul", "Verde", "Rojo", "Negro"]
     },
     {
-      question: "¿Pizza o tacos?",
-      options: ["Pizza", "Tacos", "Los dos", "Ninguno"]
+      question: "¿Cuál es mi comida favorita?",
+      options: ["Pizza", "Tacos", "Sushi", "Hamburguesa", "Pasta", "Pollo"]
     },
     {
       question: "¿Soy de día o de noche?",
