@@ -5,6 +5,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const counter = document.getElementById('slideCounter');
   const hint = document.querySelector('.hint');
 
+  // Create dither overlay
+  const ditherOverlay = document.createElement('canvas');
+  ditherOverlay.id = 'ditherOverlay';
+  ditherOverlay.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 100; opacity: 0; mix-blend-mode: multiply;
+  `;
+  document.body.appendChild(ditherOverlay);
+
+  function generateDitherPattern(w, h) {
+    ditherOverlay.width = w;
+    ditherOverlay.height = h;
+    const ctx = ditherOverlay.getContext('2d');
+    const imageData = ctx.createImageData(w, h);
+    const data = imageData.data;
+
+    // Bayer 8x8 matrix
+    const bayer = [
+      [0,32,8,40,2,34,10,42],
+      [48,16,56,24,50,18,58,26],
+      [12,44,4,36,14,46,6,38],
+      [60,28,52,20,62,30,54,22],
+      [3,35,11,43,1,33,9,41],
+      [51,19,59,27,49,17,57,25],
+      [15,47,7,39,13,45,5,37],
+      [63,31,55,23,61,29,53,21]
+    ];
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        const threshold = bayer[y % 8][x % 8] / 64;
+        // Dither between black and the accent color (#89b4fa = 137,180,250)
+        const dithered = threshold < 0.5 ? 0 : 1;
+        data[i]     = dithered ? 20 : 0;   // R
+        data[i + 1] = dithered ? 25 : 0;   // G
+        data[i + 2] = dithered ? 40 : 0;   // B
+        data[i + 3] = 255;                  // A
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  generateDitherPattern(192, 108);
+
   const TOTAL = slides.length;
   let current = 0;
   let transitioning = false;
@@ -27,14 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
     hint.textContent = current === TOTAL - 1 ? 'ENTER PARA REINICIAR' : 'ESPACIO / CLICK PARA CONTINUAR';
   }
 
-  // Step-based transition: opacity steps with scale shrink
+  // Pronounced step-based transition with dither
   function stepTransition(fromSlide, toSlide, direction) {
     if (transitioning) return;
     transitioning = true;
 
-    const steps = [1, 0.8, 0.6, 0.4, 0.2, 0];
-    const scaleSteps = [1, 0.985, 0.97, 0.955, 0.94, 0.925];
-    const stepDuration = 120;
+    const steps = [1, 0.82, 0.64, 0.46, 0.28, 0.14, 0];
+    const scaleSteps = [1, 0.975, 0.95, 0.925, 0.90, 0.875, 0.85];
+    const ditherOpacity = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9];
+    const stepDuration = 160;
     let step = 0;
 
     // Fade out
@@ -48,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toSlide.classList.add('active');
         toSlide.style.opacity = 0;
         viewport.style.transform = `scale(${scaleSteps[scaleSteps.length - 1]})`;
+        ditherOverlay.style.opacity = ditherOpacity[ditherOpacity.length - 1];
 
         // Fade in
         let inStep = steps.length - 1;
@@ -56,11 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(fadeIn);
             toSlide.style.opacity = 1;
             viewport.style.transform = 'scale(1)';
+            ditherOverlay.style.opacity = 0;
             transitioning = false;
             return;
           }
           toSlide.style.opacity = steps[inStep];
           viewport.style.transform = `scale(${scaleSteps[inStep]})`;
+          ditherOverlay.style.opacity = ditherOpacity[inStep];
           inStep--;
         }, stepDuration);
 
@@ -68,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       fromSlide.style.opacity = steps[step];
       viewport.style.transform = `scale(${scaleSteps[step]})`;
+      ditherOverlay.style.opacity = ditherOpacity[step];
       step++;
     }, stepDuration);
   }
@@ -75,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function goTo(index) {
     if (index < 0 || index >= TOTAL || index === current || transitioning) return;
     const from = slides[current];
-    const to = slides[current];
     current = index;
     stepTransition(from, slides[current], index > current ? 1 : -1);
     updateUI();
@@ -85,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (current < TOTAL - 1) {
       goTo(current + 1);
     } else {
-      // Last slide: restart or go to quiz
       current = 0;
       stepTransition(slides[TOTAL - 1], slides[0], 1);
       updateUI();
@@ -112,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
       slides[0].classList.add('active');
       slides[0].style.opacity = 1;
       viewport.style.transform = 'scale(1)';
+      ditherOverlay.style.opacity = 0;
       updateUI();
     }
   });
