@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Quién Soy? - Presentación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #1a1a1a;
+      --surface-2: #111111;
+      --text: #cdd6f4;
+      --subtext: #6c7086;
+      --accent: #89b4fa;
+      --accent-alt: #fab387;
+      --success: #a6e3a1;
+      --warning: #f9e2af;
+      --pink: #f5c2e7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease;
+    }
+
+    .slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+      padding: 48px;
+      opacity: 0;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    /* ── Title slide ── */
+    .ascii-title {
+      font-size: 11px;
+      line-height: 1.15;
+      color: var(--accent);
+      white-space: pre;
+      margin-bottom: 12px;
+    }
+
+    .nickname {
+      font-size: 16px;
+      color: var(--subtext);
+      letter-spacing: 8px;
+      margin-bottom: 32px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--subtext);
+      border-left: 2px solid var(--accent);
+      padding-left: 16px;
+      text-align: left;
+    }
+
+    /* ── Section slides ── */
+    .slide-label {
+      font-size: 11px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 32px;
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid #222;
+      padding-bottom: 12px;
+    }
+
+    .slide-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .slide-text {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--text);
+      max-width: 700px;
+    }
+
+    .slide-text strong { color: var(--accent); }
+    .slide-text em { color: var(--accent-alt); font-style: normal; }
+    .slide-text .success { color: var(--success); }
+    .slide-text .pink { color: var(--pink); }
+
+    /* ── ASCII art blocks ── */
+    .ascii-art {
+      font-size: 14px;
+      line-height: 1.3;
+      white-space: pre;
+      color: var(--subtext);
+      margin-bottom: 32px;
+    }
+
+    .ascii-art .hl { color: var(--accent); }
+    .ascii-art .hl2 { color: var(--accent-alt); }
+    .ascii-art .hl3 { color: var(--success); }
+    .ascii-art .dim { color: #333; }
+
+    /* ── Grid ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 16px;
+    }
+
+    .info-card {
+      background: linear-gradient(135deg, #1a1a1a 0%, #111 50%, #1a1a1a 100%);
+      border: 1px solid #222;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .info-card-label {
+      font-size: 10px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .info-card-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* ── Progress / hints ── */
+    .hint {
+      position: fixed;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+      color: #333;
+      letter-spacing: 2px;
+    }
+
+    .slide-counter {
+      position: fixed;
+      top: 32px;
+      right: 40px;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .progress-dots {
+      position: fixed;
+      bottom: 56px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .progress-dots .dot {
+      width: 6px;
+      height: 6px;
+      background-color: #222;
+      transition: background-color 0.3s;
+    }
+
+    .progress-dots .dot.active {
+      background-color: var(--accent);
+    }
+
+    .progress-dots .dot.done {
+      background-color: var(--subtext);
+    }
+
+    /* ── Closing ── */
+    .closing-title {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--accent);
+    }
+
+    .closing-sub {
+      font-size: 16px;
+      color: var(--subtext);
+      line-height: 1.8;
+    }
+
+    .closing-btn {
+      margin-top: 40px;
+      padding: 14px 40px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+
+    .closing-btn:hover { opacity: 0.9; }
+
+    /* ── Decorative borders ── */
+    .border-top {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin-bottom: 32px;
+    }
+
+    .border-bottom {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-alt), transparent);
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="viewport" id="viewport">
+
+    <!-- Slide 0: Title -->
+    <div class="slide" id="slide-0">
+<pre class="ascii-title">__                    _____      __               __  _
+      / /___  ________      / ___/___  / /_  ____ ______/ /_(_)___ _____
+ __  / / __ \/ ___/ _ \     \__ \/ _ \/ __ \/ __ `/ ___/ __/ / __ `/ __ \
+/ /_/ / /_/ (__  )  __/    ___/ /  __/ /_/ / /_/ (__  ) /_/ / /_/ / / / /
+\____/\____/____/\___/    /____/\___/_.___/\__,_/____/\__/_/\__,_/_/ /_/</pre>
+      <div class="nickname">J S S P</div>
+      <div class="border-bottom"></div>
+      <div class="tagline">Ingeniería de Sistemas · Medellín</div>
+    </div>
+
+    <!-- Slide 1: Origin -->
+    <div class="slide" id="slide-1">
+      <div class="slide-label">// origen</div>
+<pre class="ascii-art">
+  <span class="dim">╭──────────────────────────────────────────────╮</span>
+
+       <span class="hl">YOPAL</span>, Casanare
+         <span class="hl2">│</span>
+         <span class="hl2">▼</span>
+    <span class="dim">─── Distintas ciudades ───</span>
+         <span class="hl2">│</span>
+         <span class="hl2">▼</span>
+      <span class="hl3">MEDELLÍN</span>
+      <span class="dim">~12 años aquí</span>
+
+  <span class="dim">╰──────────────────────────────────────────────╯</span>
+</pre>
+      <div class="slide-text">
+        Nací en <strong>Yopal</strong>, crecí recorriendo Colombia,<br>
+        y hoy me considero <em>paisa</em>.
+      </div>
+    </div>
+
+    <!-- Slide 2: Career -->
+    <div class="slide" id="slide-2">
+      <div class="slide-label">// carrera</div>
+<pre class="ascii-art">
+  <span class="dim">┌──────────────────────────────────────────┐</span>
+  <span class="dim">│</span>  <span class="hl">$</span> cat /estudios/carrera.json             <span class="dim">│</span>
+  <span class="dim">├──────────────────────────────────────────┤</span>
+  <span class="dim">│</span>                                          <span class="dim">│</span>
+  <span class="dim">│</span>  <span class="hl3">{</span>                                      <span class="dim">│</span>
+  <span class="dim">│</span>    <span class="hl">"nombre"</span>: <span class="hl2">"Ingeniería de Sistemas"</span>,  <span class="dim">│</span>
+  <span class="dim">│</span>    <span class="hl">"enfasis"</span>: <span class="hl2">"Software"</span>,               <span class="dim">│</span>
+  <span class="dim">│</span>    <span class="hl">"estado"</span>: <span class="hl3">"En curso"</span>                 <span class="dim">│</span>
+  <span class="dim">│</span>  <span class="hl3">}</span>                                      <span class="dim">│</span>
+  <span class="dim">│</span>                                          <span class="dim">│</span>
+  <span class="dim">└──────────────────────────────────────────┘</span>
+</pre>
+      <div class="slide-text">
+        Estudio <strong>Ingeniería de Sistemas y Software</strong><br>
+        con enfoque en <em>desarrollo de software</em>.
+      </div>
+    </div>
+
+    <!-- Slide 3: Personality -->
+    <div class="slide" id="slide-3">
+      <div class="slide-label">// personalidad</div>
+      <div class="slide-title">Tranquilo</div>
+<pre class="ascii-art">
+              <span class="dim">~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span>
+
+                   <span class="hl">╲  │  ╱</span>
+                    <span class="hl">─ ─ ─</span>
+                    <span class="hl">╱  │  ╲</span>
+
+              <span class="dim">~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span>
+</pre>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-label">Horario</div>
+          <div class="info-card-value"><span class="success">Madrugador</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Aprendizaje</div>
+          <div class="info-card-value"><span class="hl">Visual</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Trabajo</div>
+          <div class="info-card-value"><span class="hl2">Flexible</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Sueño</div>
+          <div class="info-card-value"><span class="pink">5-7 horas</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Favorites -->
+    <div class="slide" id="slide-4">
+      <div class="slide-label">// mis gustos</div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-label">Comida</div>
+          <div class="info-card-value"><span class="hl2">🍕 Pizza</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Color</div>
+          <div class="info-card-value"><span class="hl3">■ Verde</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Música</div>
+          <div class="info-card-value"><span class="hl">♪ Un poco de todo</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Ocio</div>
+          <div class="info-card-value"><span class="pink">▶ YouTube</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Gaming</div>
+          <div class="info-card-value"><span class="hl2">🎮 De vez en cuando</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Comida diaria</div>
+          <div class="info-card-value"><span class="success">Casa · Mamá</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: PiuPiu -->
+    <div class="slide" id="slide-5">
+      <div class="slide-label">// mascota</div>
+<pre class="ascii-art">
+            <span class="hl">微信公众</span>  <span class="hl2">微信公众</span>
+          <span class="hl">微信公众微信公众微信公众</span>
+        <span class="hl">微信公众微信公众微信公众微信公众</span>
+          <span class="hl2">  ╲  │  ╱  ╲  │  ╱</span>
+            <span class="hl2">╲ │ ╱    ╲ │ ╱</span>
+              <span class="hl3">▼        ▼</span>
+
+            <span class="dim">─── ◉ ───</span>
+              <span class="dim">│</span>
+           <span class="dim">╲__│__╱</span>
+              <span class="dim">│</span>
+             <span class="dim">╱ ╲</span>
+</pre>
+      <div class="slide-title" style="color: var(--pink)">PiuPiu</div>
+      <div class="slide-text">
+        Una <strong>paloma rescatada</strong> que es <em>ciega</em>.<br>
+        Pero no por eso deja de ver el mundo<br>
+        a su manera.
+      </div>
+    </div>
+
+    <!-- Slide 6: Goal -->
+    <div class="slide" id="slide-6">
+      <div class="slide-label">// mi sueño</div>
+<pre class="ascii-art">
+  <span class="dim">╔═══════════════════════════════════════════════╗</span>
+
+      <span class="hl">██╗  ██╗ █████╗ ██████╗ ██╗████████╗</span>
+      <span class="hl">██║  ██║██╔══██╗██╔══██╗██║╚══██╔══╝</span>
+      <span class="hl2">███████║███████║██████╔╝██║   ██║</span>
+      <span class="hl2">██╔══██║██╔══██║██╔══██╗██║   ██║</span>
+      <span class="hl3">██║  ██║██║  ██║██████╔╝██║   ██║</span>
+      <span class="hl3">╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝   ╚═╝</span>
+
+  <span class="dim">╚═══════════════════════════════════════════════╝</span>
+</pre>
+      <div class="slide-text">
+        Fundar una empresa tecnológica<br>
+        <strong>respetuosa con sus usuarios</strong>.<br><br>
+        <em>Estabilidad económica</em> primero,<br>
+        <span class="success">el sueño después</span>.
+      </div>
+    </div>
+
+    <!-- Slide 7: Closing -->
+    <div class="slide" id="slide-7">
+      <div class="closing-title">¿Quién Soy?</div>
+      <div class="closing-sub">
+        Alguien que aún está construyéndose.<br><br>
+        <span class="success">Ingeniero</span> en formación · <span class="hl2">Paisa</span> de corazón<br>
+        <span class="hl">Tranquilo</span> por naturaleza · <span class="pink">Dueño de PiuPiu</span>
+      </div>
+      <div class="border-bottom" style="margin-top: 40px;"></div>
+      <a href="index.html" class="closing-btn">IR AL CUESTIONARIO</a>
+    </div>
+
+  </div>
+
+  <div class="progress-dots" id="progressDots"></div>
+  <div class="slide-counter" id="slideCounter"></div>
+  <div class="hint">ESPACIO / CLICK PARA CONTINUAR</div>
+
+  <script src="js/presentation.js"></script>
+</body>
+</html>

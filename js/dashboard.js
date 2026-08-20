@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         await set(ref(db, 'game/status'), 'finished');
         await remove(ref(db, 'game/players'));
-        window.location.href = 'index.html';
+        window.location.href = 'presentation.html';
       } catch (error) {
         console.error('Error finishing game:', error);
       }
