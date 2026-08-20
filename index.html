@@ -3,61 +3,240 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¿Quién Soy?</title>
+  <title>¿Quién Soy? - Jose Sebastian</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    body {
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
     .landing {
-      max-width: 640px;
-      text-align: center;
+      max-width: 720px;
+      width: 100%;
     }
-    .landing-title {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 24px;
+
+    .ascii-title {
+      font-size: 10px;
+      line-height: 1.15;
+      color: var(--accent);
+      white-space: pre;
+      overflow-x: auto;
+      margin-bottom: 8px;
     }
-    .landing-subtitle {
-      font-size: 18px;
-      color: var(--subtext);
-      margin-bottom: 48px;
-    }
-    .info-section {
-      text-align: left;
-      margin-bottom: 48px;
-    }
-    .info-label {
+
+    .nickname {
       font-size: 12px;
       color: var(--subtext);
-      margin-bottom: 8px;
-      text-transform: uppercase;
+      letter-spacing: 6px;
+      margin-bottom: 40px;
     }
-    .info-content {
+
+    .section {
+      background-color: var(--surface);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #2a2a2a;
+      padding-bottom: 8px;
+    }
+
+    .section-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .section-content strong {
+      color: var(--accent);
+    }
+
+    .tag {
+      display: inline-block;
+      background-color: var(--bg);
+      border: 1px solid #2a2a2a;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--accent-alt);
+      margin: 4px 4px 4px 0;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .highlight-alt {
+      color: var(--accent-alt);
+      font-weight: 600;
+    }
+
+    .highlight-success {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-item {
+      background-color: var(--bg);
+      padding: 16px;
+    }
+
+    .grid-item-label {
+      font-size: 11px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .grid-item-value {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 0;
+    }
+
+    .cta-section {
+      text-align: center;
+      margin-top: 32px;
+      margin-bottom: 32px;
+    }
+
+    .cta-label {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-bottom: 16px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 16px 48px;
+      background-color: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-family: inherit;
       font-size: 16px;
-      line-height: 1.6;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .cta-btn:hover {
+      opacity: 0.9;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--subtext);
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    @media (max-width: 480px) {
+      .ascii-title {
+        font-size: 5.5px;
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container landing">
-    <div class="landing-title">¿Quién Soy?</div>
-    <div class="landing-subtitle">La respuesta a esta pregunta...</div>
 
-    <div class="info-section">
-      <div class="info-label">SOBRE MÍ</div>
-      <div class="info-content" id="aboutMe">
-        <!-- Contenido real sobre ti - se llena después -->
-        [Contenido pendiente]
+    <pre class="ascii-title">
+       __                    _____      __               __  _
+      / /___  ________      / ___/___  / /_  ____ ______/ /_(_)___ _____
+ __  / / __ \/ ___/ _ \     \__ \/ _ \/ __ \/ __ `/ ___/ __/ / __ `/ __ \
+/ /_/ / /_/ (__  )  __/    ___/ /  __/ /_/ / /_/ (__  ) /_/ / /_/ / / / /
+\____/\____/____/\___/    /____/\___/_.___/\__,_/____/\__/_/\__,_/_/ /_/</pre>
+    <div class="nickname">J S S P</div>
+
+    <div class="section">
+      <div class="section-label">// sobre mí</div>
+      <div class="section-content">
+        Soy <span class="highlight">Jose Sebastian</span>, nací en <span class="highlight-alt">Yopal, Casanare</span> pero crecí en distintas ciudades de Colombia. Hoy llevo casi <span class="highlight">12 años viviendo en Medellín</span>, donde estudio <span class="highlight-alt">Ingeniería de Sistemas y Software</span>.
+        <br><br>
+        Me considero una persona <span class="highlight-success">tranquila</span>. En mi tiempo libre me gusta ver YouTube, jugar videojuegos de vez en cuando, y convivir con mi mascota: una <span class="highlight-alt">paloma rescatada ciega</span> llamada <span class="highlight">PiuPiu</span>.
       </div>
     </div>
 
-    <div class="info-section">
-      <div class="info-label">LO QUE DESCUBRÍ</div>
-      <div class="info-content" id="reflection">
-        <!-- Reflexión - se llena después -->
-        [Contenido pendiente]
+    <div class="section">
+      <div class="section-label">// mi mundo</div>
+      <div class="grid-2">
+        <div class="grid-item">
+          <div class="grid-item-label">Ciudad actual</div>
+          <div class="grid-item-value"><span class="highlight">Medellín</span>, Colombia</div>
+        </div>
+        <div class="grid-item">
+          <div class="grid-item-label">Carrera</div>
+          <div class="grid-item-value"><span class="highlight-alt">Sistemas / Software</span></div>
+        </div>
+        <div class="grid-item">
+          <div class="grid-item-label">Comida favorita</div>
+          <div class="grid-item-value"><span class="highlight-success">Pizza</span> (pero como de todo)</div>
+        </div>
+        <div class="grid-item">
+          <div class="grid-item-label">Color favorito</div>
+          <div class="grid-item-value"><span class="highlight-success">Verde</span></div>
+        </div>
+        <div class="grid-item">
+          <div class="grid-item-label">Horario</div>
+          <div class="grid-item-value"><span class="highlight">Madrugador</span> · duermo 5-7h</div>
+        </div>
+        <div class="grid-item">
+          <div class="grid-item-label">Música</div>
+          <div class="grid-item-value"><span class="highlight-alt">Un poco de todo</span></div>
+        </div>
       </div>
     </div>
+
+    <div class="section">
+      <div class="section-label">// mi objetivo</div>
+      <div class="section-content">
+        Mi meta es conseguir <span class="highlight">estabilidad económica</span> y un buen empleo. Pero tengo un sueño más grande: fundar una empresa tecnológica llamada <span class="highlight-alt">Magic</span>, respetuosa con sus usuarios.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">// cómo aprendo</div>
+      <div class="section-content">
+        Soy <span class="highlight">visual</span>. Los videos y tutoriales son mi herramienta principal. Trabajo de forma <span class="highlight-success">flexible</span> en equipo — me adapto a lo que el grupo necesite.
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-label">¿Crees que me conoces? Demuéstralo</div>
+      <a href="lobby.html" class="cta-btn">Iniciar Cuestionario</a>
+    </div>
+
+    <div class="footer">
+      Jose Sebastian · Ingeniería de Sistemas · Medellín, 2026
+    </div>
+
   </div>
   <script src="js/landing.js"></script>
 </body>
