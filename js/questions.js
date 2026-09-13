@@ -1,5 +1,5 @@
 const QUIZ_CONFIG = {
-  timePerQuestion: 20,
+  timePerQuestion: 15,
 
   questions: [
     {
