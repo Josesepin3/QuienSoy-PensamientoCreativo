@@ -207,6 +207,36 @@
         linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.10) 100%);
     }
 
+    /* fondo de video (YouTube embed) */
+    .tv-video {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .tv-video iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100vw, 177.78vh);
+      height: max(100vh, 56.25vw);
+      transform: translate(-50%, -50%);
+      border: 0;
+      pointer-events: none;
+      opacity: 0.60;
+    }
+
+    .tv-video::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.80) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 100%);
+    }
+
     .tv-channel {
       position: absolute;
       top: 40px;
@@ -292,7 +322,7 @@
       background-color: var(--accent);
     }
 
-    /* música: now playing + géneros */
+    /* música: now playing + grupos de artistas grandes (sin cajas) */
     .tv-now {
       display: flex;
       align-items: center;
@@ -307,47 +337,50 @@
       border: 2px solid var(--accent);
     }
 
-    .tv-genre-grid {
+    .tv-artist-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 26px 36px;
       text-align: left;
     }
 
-    .genre-panel {
-      background: linear-gradient(135deg, #161616 0%, #0d0d0d 100%);
-      border: 1px solid #242424;
-      padding: 14px 16px;
-    }
-
-    .genre-label {
+    .art-group-label {
       font-size: 10px;
       color: var(--accent-alt);
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
       border-bottom: 1px solid #1f1f1f;
-      padding-bottom: 5px;
     }
 
-    .artist-row {
+    .art-row {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 5px;
+      flex-wrap: wrap;
+      gap: 26px;
     }
 
-    .artist-row img {
-      width: 30px;
-      height: 30px;
+    .art-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      width: 80px;
+    }
+
+    .art-item img {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       object-fit: cover;
-      border: 1px solid #333;
+      border: 1px solid #3a3a3a;
     }
 
-    .artist-row span {
-      font-size: 12px;
+    .art-item span {
+      font-size: 11px;
       color: var(--text);
+      text-align: center;
+      line-height: 1.35;
     }
 
     /* películas */
@@ -596,6 +629,10 @@
     <!-- Slide 5: Música -->
     <div class="slide tv-slide" id="slide-5">
       <div class="tv-bg" style="background-image: url('img/sxmpras.jpg');"></div>
+      <div class="tv-video">
+        <iframe src="https://www.youtube.com/embed/0dT9siTP70Y?autoplay=1&mute=1&loop=1&playlist=0dT9siTP70Y&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1"
+          title="SXMPRA - COWBELL WARRIORS!" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
       <div class="tv-channel">CANAL JSSP</div>
       <div class="tv-content">
         <div class="tv-now">
@@ -606,26 +643,34 @@
             <div class="tv-sub">Rap / Trap · y un poco de todo según el día.</div>
           </div>
         </div>
-        <div class="tv-genre-grid">
-          <div class="genre-panel">
-            <div class="genre-label">Rap / Trap</div>
-            <div class="artist-row"><img src="img/sxmpras.jpg" alt=""><span>SXMPRA</span></div>
-            <div class="artist-row"><img src="img/suicideboys.jpg" alt=""><span>$uicideboy$</span></div>
-            <div class="artist-row"><img src="img/1only.jpg" alt=""><span>1only</span></div>
-            <div class="artist-row"><img src="img/ghostface.jpg" alt=""><span>Ghostface Playa</span></div>
+        <div class="tv-artist-grid">
+          <div>
+            <div class="art-group-label">Rap / Trap</div>
+            <div class="art-row">
+              <div class="art-item"><img src="img/sxmpras.jpg" alt=""><span>SXMPRA</span></div>
+              <div class="art-item"><img src="img/suicideboys.jpg" alt=""><span>$uicideboy$</span></div>
+              <div class="art-item"><img src="img/1only.jpg" alt=""><span>1only</span></div>
+              <div class="art-item"><img src="img/ghostface.jpg" alt=""><span>Ghostface Playa</span></div>
+            </div>
           </div>
-          <div class="genre-panel">
-            <div class="genre-label">Metal</div>
-            <div class="artist-row"><img src="img/hph.jpg" alt=""><span>Heaven Pierce Her</span></div>
-            <div class="artist-row"><img src="img/keygen.jpg" alt=""><span>Keygen Church</span></div>
+          <div>
+            <div class="art-group-label">Metal</div>
+            <div class="art-row">
+              <div class="art-item"><img src="img/hph.jpg" alt=""><span>Heaven Pierce Her</span></div>
+              <div class="art-item"><img src="img/keygen.jpg" alt=""><span>Keygen Church</span></div>
+            </div>
           </div>
-          <div class="genre-panel">
-            <div class="genre-label">Indie</div>
-            <div class="artist-row"><img src="img/yotclub.jpg" alt=""><span>Yot Club</span></div>
+          <div>
+            <div class="art-group-label">Indie</div>
+            <div class="art-row">
+              <div class="art-item"><img src="img/yotclub.jpg" alt=""><span>Yot Club</span></div>
+            </div>
           </div>
-          <div class="genre-panel">
-            <div class="genre-label">Electrónica</div>
-            <div class="artist-row"><img src="img/daftpunk.jpg" alt=""><span>Daft Punk</span></div>
+          <div>
+            <div class="art-group-label">Electrónica</div>
+            <div class="art-row">
+              <div class="art-item"><img src="img/daftpunk.jpg" alt=""><span>Daft Punk</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -634,6 +679,10 @@
     <!-- Slide 6: Películas -->
     <div class="slide tv-slide" id="slide-6">
       <div class="tv-bg" style="background-image: url('img/interstellar.jpg');"></div>
+      <div class="tv-video">
+        <iframe src="https://www.youtube.com/embed/zSWdZVtXT7E?autoplay=1&mute=1&loop=1&playlist=zSWdZVtXT7E&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1"
+          title="Interstellar - Official Trailer" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
       <div class="tv-channel">CANAL JSSP</div>
       <div class="tv-content" style="align-items: center;">
         <div class="tv-kicker" style="width: 100%; text-align: center;">// películas favoritas</div>
