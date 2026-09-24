@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let current = 0;
   let transitioning = false;
 
+  // Diapositiva de videojuegos (el rotador se reinicia al abrirla)
+  const GAMES_INDEX = [].indexOf.call(slides, document.getElementById('slide-4'));
+
   // Create progress dots
   for (let i = 0; i < TOTAL; i++) {
     const dot = document.createElement('div');
@@ -126,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (index < 0 || index >= TOTAL || index === current || transitioning) return;
     const from = slides[current];
     current = index;
+    gamesSlideChanged(index);
     stepTransition(from, slides[current], index > current ? 1 : -1);
     updateUI();
   }
@@ -135,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       goTo(current + 1);
     } else {
       current = 0;
+      gamesSlideChanged(0);
       stepTransition(slides[TOTAL - 1], slides[0], 1);
       updateUI();
     }
@@ -156,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       prev();
     } else if (e.key === 'r' || e.key === 'R') {
       current = 0;
+      gamesSlideChanged(0);
       slides.forEach(s => { s.classList.remove('active'); s.style.opacity = 0; });
       slides[0].classList.add('active');
       slides[0].style.opacity = 1;
@@ -185,6 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── Game rotator (diapositiva videojuegos) ──
+  // Hook que el navegador de diapositivas llama en cada cambio (se conecta abajo)
+  let gamesSlideChanged = () => {};
+
   const tvGames = [
     { img: 'img/ultrakill.jpg',  title: 'ULTRAKILL',              sub: 'Mi favorito del momento · FPS frenético de estilo puro.' },
     { img: 'img/minecraft.jpg',  title: 'Minecraft',              sub: 'El clásico: construir, explorar y sobrevivir.' },
@@ -211,6 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
     tvGames.forEach(g => { const im = new Image(); im.src = g.img; });
 
     let gi = 0;
+    let gameTimer = null;
+
     function showGame(i, animate) {
       const g = tvGames[i];
       const apply = () => {
@@ -238,10 +249,29 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    setInterval(() => {
-      gi = (gi + 1) % tvGames.length;
-      showGame(gi, true);
-    }, 5000);
+    // El temporizador solo corre mientras la diapositiva de videojuegos está abierta,
+    // y cada vez que se abre arranca de nuevo desde el primer juego (tiempo = 0).
+    function stopGameTimer() {
+      if (gameTimer !== null) {
+        clearInterval(gameTimer);
+        gameTimer = null;
+      }
+    }
+
+    function startGameTimer() {
+      stopGameTimer();
+      gi = 0;
+      showGame(0, false);
+      gameTimer = setInterval(() => {
+        gi = (gi + 1) % tvGames.length;
+        showGame(gi, true);
+      }, 5000);
+    }
+
+    gamesSlideChanged = (newCurrent) => {
+      if (newCurrent === GAMES_INDEX) startGameTimer();
+      else stopGameTimer();
+    };
   }
 
   // Init
