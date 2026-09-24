@@ -178,86 +178,161 @@
       font-weight: 600;
     }
 
-    /* ── Favorites slide ── */
-    .fav-grid {
-      display: flex;
-      gap: 20px;
+    /* ── Cinematic TV slides (gustos) ── */
+    .tv-slide {
+      position: relative;
+      width: 100vw;
+      max-width: none;
+      padding: 48px 64px;
+      overflow: hidden;
+    }
+
+    .tv-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.30;
+      filter: grayscale(25%);
+      z-index: 0;
+    }
+
+    .tv-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.20) 45%, rgba(0,0,0,0.75) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.10) 100%);
+    }
+
+    .tv-channel {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #000;
+      background: var(--accent);
+      padding: 5px 12px;
+      text-transform: uppercase;
+    }
+
+    .tv-content {
+      position: relative;
+      z-index: 1;
       width: 100%;
-      max-width: 860px;
-      align-items: flex-start;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
       text-align: left;
     }
 
-    .fav-panel {
-      flex: 1;
-      min-width: 0;
-      background: linear-gradient(135deg, #1a1a1a 0%, #111 50%, #1a1a1a 100%);
-      border: 1px solid #222;
-      padding: 20px;
+    .tv-kicker {
+      font-size: 11px;
+      color: var(--accent-alt);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 10px;
     }
 
-    .fav-header {
+    .tv-title {
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.05;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .tv-sub {
+      font-size: 14px;
+      color: var(--subtext);
+      line-height: 1.7;
+      max-width: 440px;
+    }
+
+    /* hero (juego principal) */
+    .tv-hero {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .tv-hero-poster {
+      width: 240px;
+      height: 360px;
+      object-fit: cover;
+      border: 1px solid #2a2a2a;
+    }
+
+    /* estante de juegos secundarios */
+    .tv-shelf-label {
       font-size: 11px;
       color: var(--subtext);
       text-transform: uppercase;
       letter-spacing: 3px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       border-bottom: 1px solid #222;
       padding-bottom: 8px;
     }
 
-    .fav-header .icon { color: var(--accent-alt); margin-right: 8px; }
+    .tv-shelf {
+      display: flex;
+      gap: 16px;
+    }
 
-    /* games */
-    .game-main {
-      display: block;
+    .tv-card {
+      flex: 1;
+      min-width: 0;
+      background: linear-gradient(135deg, #161616 0%, #0d0d0d 100%);
+      border: 1px solid #242424;
+      padding: 10px 8px 12px;
       text-align: center;
-      margin-bottom: 14px;
     }
 
-    .game-main img {
-      width: 110px;
-      height: 165px;
+    .tv-card img {
+      width: 100%;
+      height: 108px;
       object-fit: cover;
       border: 1px solid #2a2a2a;
       display: block;
-      margin: 0 auto 8px;
+      margin-bottom: 8px;
     }
 
-    .game-main .game-name-main {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-
-    .game-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .game-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .game-item img {
-      width: 28px;
-      height: 42px;
-      object-fit: cover;
-      border: 1px solid #2a2a2a;
-    }
-
-    .game-item span {
-      font-size: 12px;
+    .tv-card span {
+      font-size: 11px;
       color: var(--text);
     }
 
-    /* music */
-    .genre-block {
-      margin-bottom: 10px;
+    /* música: now playing + géneros */
+    .tv-now {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .tv-now-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+
+    .tv-genre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .genre-panel {
+      background: linear-gradient(135deg, #161616 0%, #0d0d0d 100%);
+      border: 1px solid #242424;
+      padding: 14px 16px;
     }
 
     .genre-label {
@@ -265,7 +340,9 @@
       color: var(--accent-alt);
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #1f1f1f;
+      padding-bottom: 5px;
     }
 
     .artist-row {
@@ -288,28 +365,41 @@
       color: var(--text);
     }
 
-    /* movies */
-    .movie-block {
-      text-align: center;
-      margin-bottom: 12px;
+    /* películas */
+    .tv-movies {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 56px;
     }
 
-    .movie-block img {
-      width: 96px;
-      height: 142px;
+    .tv-movie {
+      text-align: center;
+    }
+
+    .tv-movie img {
+      width: 260px;
+      height: 390px;
       object-fit: cover;
       border: 1px solid #2a2a2a;
-      display: block;
-      margin: 0 auto 6px;
+      margin-bottom: 14px;
     }
 
-    .movie-block span {
-      font-size: 12px;
-      font-weight: 600;
+    .tv-movie-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
-    .movie-1 span { color: var(--accent); }
-    .movie-2 span { color: var(--accent-alt); }
+    .tv-movie-a { color: var(--accent); }
+    .tv-movie-b { color: var(--accent-alt); }
+
+    .tv-movie-sub {
+      font-size: 11px;
+      color: var(--subtext);
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
 
     /* ── Progress / hints ── */
     .hint {
@@ -501,69 +591,96 @@
       </div>
     </div>
 
-    <!-- Slide 4: Favorites -->
-    <div class="slide" id="slide-4">
-      <div class="slide-label">// mis gustos</div>
-
-      <div class="fav-grid">
-        <!-- Col 1: Videojuegos -->
-        <div class="fav-panel">
-          <div class="fav-header"><span class="icon">▶</span> Videojuegos</div>
-          <div class="game-main">
-            <img src="img/ultrakill.jpg" alt="ULTRAKILL">
-            <span class="game-name-main">ULTRAKILL</span>
-          </div>
-          <div class="game-list">
-            <div class="game-item"><img src="img/minecraft.jpg" alt=""><span>Minecraft</span></div>
-            <div class="game-item"><img src="img/detroit.jpg" alt=""><span>Detroit: Become Human</span></div>
-            <div class="game-item"><img src="img/buckshot.jpg" alt=""><span>Buckshot Roulette</span></div>
-            <div class="game-item"><img src="img/cloverpit.jpg" alt=""><span>Clover Pit</span></div>
-            <div class="game-item"><img src="img/balatro.jpg" alt=""><span>Balatro</span></div>
+    <!-- Slide 4: Videojuegos -->
+    <div class="slide tv-slide" id="slide-4">
+      <div class="tv-bg" style="background-image: url('img/ultrakill.jpg');"></div>
+      <div class="tv-channel">CANAL JSSP</div>
+      <div class="tv-content">
+        <div class="tv-hero">
+          <img class="tv-hero-poster" src="img/ultrakill.jpg" alt="ULTRAKILL">
+          <div>
+            <div class="tv-kicker">// videojuegos</div>
+            <div class="tv-title">ULTRAKILL</div>
+            <div class="tv-sub">
+              Mi juego favorito del momento.<br>
+              Velocidad, estilo y caos en su estado más puro.
+            </div>
           </div>
         </div>
+        <div>
+          <div class="tv-shelf-label">También en mi biblioteca</div>
+          <div class="tv-shelf">
+            <div class="tv-card"><img src="img/minecraft.jpg" alt=""><span>Minecraft</span></div>
+            <div class="tv-card"><img src="img/detroit.jpg" alt=""><span>Detroit: Become Human</span></div>
+            <div class="tv-card"><img src="img/buckshot.jpg" alt=""><span>Buckshot Roulette</span></div>
+            <div class="tv-card"><img src="img/cloverpit.jpg" alt=""><span>Clover Pit</span></div>
+            <div class="tv-card"><img src="img/balatro.jpg" alt=""><span>Balatro</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- Col 2: Música -->
-        <div class="fav-panel">
-          <div class="fav-header"><span class="icon">♪</span> Música por género</div>
-          <div class="genre-block">
+    <!-- Slide 5: Música -->
+    <div class="slide tv-slide" id="slide-5">
+      <div class="tv-bg" style="background-image: url('img/sxmpras.jpg');"></div>
+      <div class="tv-channel">CANAL JSSP</div>
+      <div class="tv-content">
+        <div class="tv-now">
+          <img class="tv-now-avatar" src="img/sxmpras.jpg" alt="SXMPRA">
+          <div>
+            <div class="tv-kicker">// música · ahora en reproducción</div>
+            <div class="tv-title">SXMPRA</div>
+            <div class="tv-sub">Rap / Trap · y un poco de todo según el día.</div>
+          </div>
+        </div>
+        <div class="tv-genre-grid">
+          <div class="genre-panel">
             <div class="genre-label">Rap / Trap</div>
             <div class="artist-row"><img src="img/sxmpras.jpg" alt=""><span>SXMPRA</span></div>
             <div class="artist-row"><img src="img/suicideboys.jpg" alt=""><span>$uicideboy$</span></div>
             <div class="artist-row"><img src="img/1only.jpg" alt=""><span>1only</span></div>
             <div class="artist-row"><img src="img/ghostface.jpg" alt=""><span>Ghostface Playa</span></div>
           </div>
-          <div class="genre-block">
+          <div class="genre-panel">
             <div class="genre-label">Metal</div>
             <div class="artist-row"><img src="img/hph.jpg" alt=""><span>Heaven Pierce Her</span></div>
             <div class="artist-row"><img src="img/keygen.jpg" alt=""><span>Keygen Church</span></div>
           </div>
-          <div class="genre-block">
+          <div class="genre-panel">
             <div class="genre-label">Indie</div>
             <div class="artist-row"><img src="img/yotclub.jpg" alt=""><span>Yot Club</span></div>
           </div>
-          <div class="genre-block">
+          <div class="genre-panel">
             <div class="genre-label">Electrónica</div>
             <div class="artist-row"><img src="img/daftpunk.jpg" alt=""><span>Daft Punk</span></div>
-          </div>
-        </div>
-
-        <!-- Col 3: Películas -->
-        <div class="fav-panel">
-          <div class="fav-header"><span class="icon">▣</span> Películas</div>
-          <div class="movie-block movie-1">
-            <img src="img/interstellar.jpg" alt="Interstellar">
-            <span>Interstellar</span>
-          </div>
-          <div class="movie-block movie-2">
-            <img src="img/odyssey.jpg" alt="The Odyssey">
-            <span>The Odyssey</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Slide 5: Goal -->
-    <div class="slide" id="slide-5">
+    <!-- Slide 6: Películas -->
+    <div class="slide tv-slide" id="slide-6">
+      <div class="tv-bg" style="background-image: url('img/interstellar.jpg');"></div>
+      <div class="tv-channel">CANAL JSSP</div>
+      <div class="tv-content" style="align-items: center;">
+        <div class="tv-kicker" style="width: 100%; text-align: center;">// películas favoritas</div>
+        <div class="tv-movies">
+          <div class="tv-movie">
+            <img src="img/interstellar.jpg" alt="Interstellar">
+            <div class="tv-movie-title tv-movie-a">INTERSTELLAR</div>
+            <div class="tv-movie-sub">2014 · Sci-Fi</div>
+          </div>
+          <div class="tv-movie">
+            <img src="img/odyssey.jpg" alt="The Odyssey">
+            <div class="tv-movie-title tv-movie-b">THE ODYSSEY</div>
+            <div class="tv-movie-sub">2026 · Épica</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Goal -->
+    <div class="slide" id="slide-7">
       <div class="slide-label">// mi sueño</div>
 <pre class="ascii-art" style="font-size: 10px; line-height: 1; color: var(--accent); -webkit-font-smoothing: none;">
 
