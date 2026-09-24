@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (i === current) d.classList.add('active');
       else if (i < current) d.classList.add('done');
     });
-    hint.textContent = current === TOTAL - 1 ? 'ENTER PARA REINICIAR' : 'ESPACIO / CLICK PARA CONTINUAR';
+    hint.textContent = current === TOTAL - 1 ? 'TOCA PARA REINICIAR' : 'TOCA LA PANTALLA PARA CONTINUAR';
   }
 
   // Pronounced step-based transition with dither
@@ -189,6 +189,50 @@ document.addEventListener('DOMContentLoaded', () => {
       next();
     }
   });
+
+  // ── Fullscreen (TV táctil sin teclado) ──
+  const fsBtn = document.getElementById('fullscreenBtn');
+  if (fsBtn) {
+    const fsIcon = fsBtn.querySelector('.fs-icon') || fsBtn;
+
+    const requestFs = (el) => {
+      const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      if (!fn) return Promise.reject(new Error('Fullscreen no soportado'));
+      return fn.call(el);
+    };
+    const exitFs = () => {
+      const fn = document.exitFullscreen || document.webkitExitFullscreen;
+      if (!fn) return Promise.reject(new Error('Fullscreen no soportado'));
+      return fn.call(document);
+    };
+    const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+
+    function updateFsUI() {
+      const active = !!fsElement();
+      fsBtn.classList.toggle('fs-active', active);
+      fsIcon.textContent = active ? '[SALIR]' : '[FULL]';
+    }
+
+    fsBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        if (fsElement()) {
+          await exitFs();
+        } else {
+          try {
+            await requestFs(document.documentElement);
+          } catch (_) {
+            await requestFs(document.body);
+          }
+        }
+      } catch (_) { /* algunos navegadores de TV rechazan; se ignora */ }
+    });
+
+    document.addEventListener('fullscreenchange', updateFsUI);
+    document.addEventListener('webkitfullscreenchange', updateFsUI);
+    updateFsUI();
+  }
 
   // ── Game rotator (diapositiva videojuegos) ──
   // Hook que el navegador de diapositivas llama en cada cambio (se conecta abajo)

@@ -420,6 +420,33 @@
     }
 
     /* ── Progress / hints ── */
+    .fullscreen-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 36px;
+      z-index: 60;
+      background: rgba(13, 13, 13, 0.55);
+      border: 1px solid #2a2a2a;
+      color: var(--subtext);
+      font-size: 10px;
+      font-family: inherit;
+      letter-spacing: 1px;
+      padding: 5px 9px;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fullscreen-btn:hover,
+    .fullscreen-btn:active,
+    .fullscreen-btn.fs-active {
+      opacity: 1;
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
     .hint {
       position: fixed;
       bottom: 32px;
@@ -750,6 +777,9 @@
   <div class="progress-dots" id="progressDots"></div>
   <div class="slide-counter" id="slideCounter"></div>
   <div class="hint">ESPACIO / CLICK PARA CONTINUAR</div>
+  <button id="fullscreenBtn" class="fullscreen-btn" aria-label="Pantalla completa" title="Pantalla completa">
+    <span class="fs-icon">[FULL]</span>
+  </button>
 
   <script src="js/presentation.js"></script>
 </body>
