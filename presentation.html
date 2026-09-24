@@ -178,6 +178,94 @@
       font-weight: 600;
     }
 
+    /* ── Favorites slide ── */
+    .fav-section {
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .fav-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .fav-header {
+      font-size: 11px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #222;
+      padding-bottom: 8px;
+    }
+
+    .fav-header .icon { color: var(--accent-alt); margin-right: 8px; }
+
+    .fav-main {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .fav-sub {
+      font-size: 13px;
+      color: var(--subtext);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-item {
+      background-color: var(--bg);
+      border: 1px solid #2a2a2a;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .genre-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .genre-name {
+      font-size: 11px;
+      color: var(--accent-alt);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      min-width: 90px;
+    }
+
+    .genre-artists {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .movie-list {
+      display: flex;
+      gap: 12px;
+    }
+
+    .movie-item {
+      background-color: var(--bg);
+      border: 1px solid #2a2a2a;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--hl, var(--accent));
+    }
+
+    .movie-item:last-child {
+      color: var(--accent-alt);
+    }
+
     /* ── Progress / hints ── */
     .hint {
       position: fixed;
@@ -371,30 +459,44 @@
     <!-- Slide 4: Favorites -->
     <div class="slide" id="slide-4">
       <div class="slide-label">// mis gustos</div>
-      <div class="info-grid">
-        <div class="info-card">
-          <div class="info-card-label">Comida</div>
-          <div class="info-card-value"><span class="hl2">🍕 Pizza</span></div>
+
+      <div class="fav-section">
+        <div class="fav-header"><span class="icon">▶</span> Videojuego Favorito</div>
+        <div class="fav-main">ULTRAKILL</div>
+        <div class="tag-list">
+          <span class="tag-item">Minecraft</span>
+          <span class="tag-item">Detroit: Become Human</span>
+          <span class="tag-item">Buckshot Roulette</span>
+          <span class="tag-item">Clover Pit</span>
+          <span class="tag-item">Balatro</span>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">Color</div>
-          <div class="info-card-value"><span class="hl3">■ Verde</span></div>
+      </div>
+
+      <div class="fav-section">
+        <div class="fav-header"><span class="icon">♪</span> Música por género</div>
+        <div class="genre-row">
+          <span class="genre-name">Rap / Trap</span>
+          <span class="genre-artists">SXMPRA · $uicideboy$ · 1only · Ghostface Playa</span>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">Música</div>
-          <div class="info-card-value"><span class="hl">♪ Un poco de todo</span></div>
+        <div class="genre-row">
+          <span class="genre-name">Metal</span>
+          <span class="genre-artists">Heaven Pierce Her · Keygen Church</span>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">Ocio</div>
-          <div class="info-card-value"><span class="pink">▶ YouTube</span></div>
+        <div class="genre-row">
+          <span class="genre-name">Indie</span>
+          <span class="genre-artists">Yot Club</span>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">Gaming</div>
-          <div class="info-card-value"><span class="hl2">🎮 De vez en cuando</span></div>
+        <div class="genre-row">
+          <span class="genre-name">Electrónica</span>
+          <span class="genre-artists">Daft Punk</span>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">Comida diaria</div>
-          <div class="info-card-value"><span class="success">Casa · Mamá</span></div>
+      </div>
+
+      <div class="fav-section">
+        <div class="fav-header"><span class="icon">▣</span> Películas favoritas</div>
+        <div class="movie-list">
+          <span class="movie-item">Interstellar</span>
+          <span class="movie-item">The Odyssey</span>
         </div>
       </div>
     </div>
