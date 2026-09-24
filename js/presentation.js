@@ -184,6 +184,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ── Game rotator (diapositiva videojuegos) ──
+  const tvGames = [
+    { img: 'img/ultrakill.jpg',  title: 'ULTRAKILL',              sub: 'Mi favorito del momento · FPS frenético de estilo puro.' },
+    { img: 'img/minecraft.jpg',  title: 'Minecraft',              sub: 'El clásico: construir, explorar y sobrevivir.' },
+    { img: 'img/detroit.jpg',    title: 'Detroit: Become Human',  sub: 'Cada decisión cambia el rumbo de la historia.' },
+    { img: 'img/buckshot.jpg',   title: 'Buckshot Roulette',      sub: 'Roulette rusa con escopeta contra la mesa.' },
+    { img: 'img/cloverpit.jpg',  title: 'Clover Pit',             sub: 'Tragamonedas infernal de deuda eterna.' },
+    { img: 'img/balatro.jpg',    title: 'Balatro',                sub: 'Póker roguelike imposible de soltar.' }
+  ];
+  const gamePoster = document.getElementById('tvGamePoster');
+  const gameTitle = document.getElementById('tvGameTitle');
+  const gameSub = document.getElementById('tvGameSub');
+  const gameBg = document.getElementById('tvGameBg');
+  const gameDots = document.getElementById('tvGameDots');
+
+  if (gamePoster && gameTitle && gameSub && gameDots) {
+    const dotEls = tvGames.map((g, i) => {
+      const d = document.createElement('div');
+      d.className = 'tv-game-dot' + (i === 0 ? ' active' : '');
+      gameDots.appendChild(d);
+      return d;
+    });
+
+    // Preload images para evitar parpadeos
+    tvGames.forEach(g => { const im = new Image(); im.src = g.img; });
+
+    let gi = 0;
+    function showGame(i, animate) {
+      const g = tvGames[i];
+      const apply = () => {
+        gamePoster.src = g.img;
+        gamePoster.alt = g.title;
+        gameTitle.textContent = g.title;
+        gameSub.textContent = g.sub;
+        if (gameBg) gameBg.style.backgroundImage = `url('${g.img}')`;
+        dotEls.forEach((d, k) => d.classList.toggle('active', k === i));
+      };
+      if (animate) {
+        gamePoster.style.opacity = 0;
+        gameTitle.style.opacity = 0;
+        gameSub.style.opacity = 0;
+        setTimeout(() => {
+          apply();
+          requestAnimationFrame(() => {
+            gamePoster.style.opacity = 1;
+            gameTitle.style.opacity = 1;
+            gameSub.style.opacity = 1;
+          });
+        }, 250);
+      } else {
+        apply();
+      }
+    }
+
+    setInterval(() => {
+      gi = (gi + 1) % tvGames.length;
+      showGame(gi, true);
+    }, 5000);
+  }
+
   // Init
   slides[0].classList.add('active');
   slides[0].style.opacity = 1;
