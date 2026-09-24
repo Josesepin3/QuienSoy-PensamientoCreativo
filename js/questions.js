@@ -20,7 +20,7 @@ const QUIZ_CONFIG = {
     },
     {
       question: "¿Qué estudio?",
-      options: ["Sistemas/Software", "Electrónica", "Mecánica", "Otra ingeniería"]
+      options: ["Tecnología en Des. Software", "Ing. Sistemas", "Electrónica", "Mecánica"]
     },
     {
       question: "¿Qué música escucho?",
