@@ -159,6 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       prev();
+    } else if (/^[0-9]$/.test(e.key) || /^Numpad[0-9]$/.test(e.key)) {
+      // Debug oculto: salto directo a una diapositiva por número
+      goTo(parseInt(e.key.replace('Numpad', ''), 10));
     } else if (e.key === 'r' || e.key === 'R') {
       current = 0;
       gamesSlideChanged(0);
